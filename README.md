@@ -18,6 +18,8 @@ docker compose up --build -d
 
 Compose waits for PostgreSQL to be healthy before starting the API. The API listens on `http://localhost:8080` and the database on `localhost:5432`. The default database and credentials are `task_manager`, `task_manager`, and `task_manager`; override them with `POSTGRES_DB`, `POSTGRES_USER`, and `POSTGRES_PASSWORD` if needed.
 
+The task manager interface runs in its own Nginx container at <http://localhost:3001>. It proxies API requests to the Java app container, which remains available at <http://localhost:8080>; Swagger API documentation is at <http://localhost:8080/swagger-ui/index.html>. You can create, edit, complete, search, filter, and delete tasks from the frontend.
+
 ## API documentation
 
 - Swagger UI: <http://localhost:8080/swagger-ui/index.html>

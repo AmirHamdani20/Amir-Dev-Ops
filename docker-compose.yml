@@ -31,5 +31,15 @@ services:
       postgres:
         condition: service_healthy
 
+  frontend:
+    build:
+      context: ./frontend
+    container_name: task-manager-frontend
+    restart: unless-stopped
+    ports:
+      - "3001:80"
+    depends_on:
+      - app
+
 volumes:
   postgres_data:
