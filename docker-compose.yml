@@ -26,7 +26,7 @@ services:
       DB_USERNAME: ${POSTGRES_USER:-task_manager}
       DB_PASSWORD: ${POSTGRES_PASSWORD:-task_manager}
     ports:
-      - "8080:8080"
+      - "8081:8080"
     depends_on:
       postgres:
         condition: service_healthy
