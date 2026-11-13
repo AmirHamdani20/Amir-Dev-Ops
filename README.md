@@ -20,6 +20,14 @@ Compose waits for PostgreSQL to be healthy before starting the API. The API list
 
 The task manager interface runs in its own Nginx container at <http://localhost:3001>. It proxies API requests to the Java app container, which remains available at <http://localhost:8080>; Swagger API documentation is at <http://localhost:8080/swagger-ui/index.html>. You can create, edit, complete, search, filter, and delete tasks from the frontend.
 
+## Local SonarQube for Jenkins
+
+The Compose stack also includes a local SonarQube Community server at <http://localhost:9000>. Start it with `docker compose up -d sonarqube`. First startup can take several minutes; sign in with the initial `admin` / `admin` credentials and set a new password when prompted.
+
+To let Jenkins use this server, install the SonarQube Scanner for Jenkins plugin and restart Jenkins. Add a Jenkins SonarQube installation named `TaskManagerSonarQube` with server URL `http://host.docker.internal:9000`, and select a SonarQube user token stored as a Jenkins secret-text credential. Do not commit the token to this repository. The Jenkinsfile's analysis stage uses the Maven scanner and project key `task-manager`.
+
+For the Quality gate stage, add a webhook in SonarQube under **Administration → Configuration → Webhooks** pointing to `http://host.docker.internal:8080/sonarqube-webhook/`. Jenkins must be reachable on host port 8080, and the SonarQube Scanner for Jenkins plugin must be installed. The pipeline requires an online Java/Maven agent. SonarQube data is stored in named Docker volumes and survives `docker compose down`; `docker compose down -v` removes those volumes.
+
 ## API documentation
 
 - Swagger UI: <http://localhost:8080/swagger-ui/index.html>
