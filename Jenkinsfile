@@ -21,6 +21,22 @@ pipeline {
                 }
             }
         }
+
+        stage('SonarQube analysis') {
+            steps {
+                withSonarQubeEnv('TaskManagerSonarQube') {
+                    sh 'mvn -B org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.0.3922:sonar -Dsonar.projectKey=task-manager'
+                }
+            }
+        }
+
+        stage('Quality gate') {
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
     }
 
     post {
