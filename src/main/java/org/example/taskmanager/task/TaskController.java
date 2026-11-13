@@ -30,7 +30,7 @@ public class TaskController {
     }
 
     @GetMapping
-    @Operation(summary = "List all tasks")
+    @Operation(summary = "List all tasks", description = "Returns tasks ordered by ID")
     public List<TaskResponse> findAll() {
         return taskService.findAll();
     }
